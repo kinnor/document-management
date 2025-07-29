@@ -38,6 +38,7 @@ def generate_summary(text: str, timeout: float = 5.0) -> str:
 
     session = _create_session()
     headers = {"Authorization": f"Bearer {api_key}"}
+    logger.info("Sending text to AI API")
     try:
         response = session.post(API_URL, json={"text": text}, headers=headers, timeout=timeout)
         response.raise_for_status()
@@ -54,9 +55,11 @@ def generate_summary(text: str, timeout: float = 5.0) -> str:
         logger.error("Invalid AI API response: %s", exc)
         raise RuntimeError("Invalid AI API response") from exc
 
+    logger.debug("AI API response: %s", data)
     result = data.get("result")
     if result is None:
         logger.error("AI API response missing 'result': %s", data)
         raise RuntimeError("AI API response missing 'result'")
 
+    logger.info("AI API summary generated")
     return str(result)
