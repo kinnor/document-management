@@ -12,3 +12,18 @@ It now includes basic OCR functionality using Tesseract and pdf2image.
 ## Development
 
 Install dependencies from `requirements.txt` and run the tests with `pytest`.
+
+## Frontend
+
+The `frontend` directory contains a standalone React application built with
+[Vite](https://vitejs.dev/). Install its dependencies with `npm install` and
+start the development server:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+The source code is organized into `components`, `pages`, `services` and `utils`
+for a clean separation from the backend.
