@@ -29,3 +29,11 @@ body {
 .upload-container .result pre {
   white-space: pre-wrap;
 }
+
+.json-output {
+  background-color: #f5f5f5;
+  padding: 1rem;
+  border-radius: 4px;
+  font-family: monospace;
+  overflow-x: auto;
+}

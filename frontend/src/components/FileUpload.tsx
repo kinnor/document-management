@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-import { extractText } from '../services'
+import { extractText, OCRResult } from '../services'
+import ResultDisplay from './ResultDisplay'
 
 const MAX_SIZE = 5 * 1024 * 1024 // 5MB
 
 function FileUpload() {
   const [file, setFile] = useState<File | null>(null)
   const [error, setError] = useState('')
-  const [result, setResult] = useState<string | null>(null)
+  const [result, setResult] = useState<OCRResult | null>(null)
   const [loading, setLoading] = useState(false)
 
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,8 +40,8 @@ function FileUpload() {
     setError('')
     setLoading(true)
     try {
-      const text = await extractText(file)
-      setResult(text)
+      const data = await extractText(file)
+      setResult(data)
     } catch (err: any) {
       if (axios.isAxiosError(err)) {
         setError(err.response?.data?.detail || err.message)
@@ -59,12 +60,7 @@ function FileUpload() {
         {loading ? 'Uploading...' : 'Upload'}
       </button>
       {error && <p className="error">{error}</p>}
-      {result && (
-        <div className="result">
-          <h3>Extracted Text</h3>
-          <pre>{result}</pre>
-        </div>
-      )}
+      {result && <ResultDisplay data={result} />}
     </div>
   )
 }
