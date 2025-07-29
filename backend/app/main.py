@@ -1,5 +1,8 @@
+import logging
 from fastapi import FastAPI
 from .routes import document_routes, ocr_routes, ai_routes
+
+logger = logging.getLogger(__name__)
 
 app = FastAPI(title="Document Management API")
 
@@ -10,4 +13,5 @@ app.include_router(ai_routes.router, prefix="/ai", tags=["ai"])
 
 @app.get("/")
 def read_root():
+    logger.info("GET /")
     return {"message": "Welcome to the Document Management API"}
