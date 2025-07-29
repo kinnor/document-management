@@ -1,1 +1,1 @@
-// export components
+export { default as FileUpload } from './FileUpload'

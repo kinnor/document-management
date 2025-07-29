@@ -1,1 +1,1 @@
-// export services
+export * from './ocrService'
