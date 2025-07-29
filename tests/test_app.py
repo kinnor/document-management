@@ -60,3 +60,19 @@ def test_extract_endpoint(monkeypatch, tmp_path):
 
     assert resp.status_code == 200
     assert resp.json() == {"text": "ocr text"}
+
+
+def test_ai_generate(monkeypatch):
+    monkeypatch.setenv("AI_API_KEY", "k")
+
+    def fake_generate(text):
+        assert text == "hello"
+        return "result"
+
+    monkeypatch.setattr(
+        "backend.app.services.ai_service.generate_summary", fake_generate
+    )
+
+    resp = client.post("/ai/generate", json={"text": "hello"})
+    assert resp.status_code == 200
+    assert resp.json() == {"result": "result"}
