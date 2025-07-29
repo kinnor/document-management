@@ -6,7 +6,7 @@ It now includes basic OCR functionality using Tesseract and pdf2image.
 ## Features
 
 - Create and list document metadata.
-- Extract text from uploaded PDF files via the `/ocr/extract` endpoint.
+- Extract text from uploaded PDF files via the `/ocr/extract` or `/extract` endpoints.
 
 ## Development
 

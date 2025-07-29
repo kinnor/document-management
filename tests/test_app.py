@@ -41,3 +41,22 @@ def test_ocr_endpoint(monkeypatch, tmp_path):
 
     assert resp.status_code == 200
     assert resp.json() == {"text": "ocr text"}
+
+
+def test_extract_endpoint(monkeypatch, tmp_path):
+    sample_pdf = tmp_path / "sample.pdf"
+    sample_pdf.write_bytes(b"dummy")
+
+    monkeypatch.setattr(
+        "backend.app.services.ocr_service.extract_text_from_pdf",
+        lambda path: "ocr text",
+    )
+
+    with sample_pdf.open("rb") as f:
+        resp = client.post(
+            "/extract",
+            files={"file": ("sample.pdf", f, "application/pdf")},
+        )
+
+    assert resp.status_code == 200
+    assert resp.json() == {"text": "ocr text"}

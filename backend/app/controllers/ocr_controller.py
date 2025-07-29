@@ -8,13 +8,15 @@ import tempfile
 
 from fastapi import APIRouter, File, HTTPException, UploadFile
 
+from ..models.ocr_model import OCRResult
+
 from ..services.ocr_service import extract_text_from_pdf
 
 router = APIRouter()
 
 
-@router.post("/extract")
-async def extract_text(file: UploadFile = File(...)) -> dict[str, str]:
+@router.post("/extract", response_model=OCRResult)
+async def extract_text(file: UploadFile = File(...)) -> OCRResult:
     """Extract text from an uploaded PDF file using OCR."""
     if file.content_type != "application/pdf":
         raise HTTPException(status_code=400, detail="Only PDF files are supported")
@@ -35,4 +37,4 @@ async def extract_text(file: UploadFile = File(...)) -> dict[str, str]:
         if tmp_path and os.path.exists(tmp_path):
             os.remove(tmp_path)
 
-    return {"text": text}
+    return OCRResult(text=text)
