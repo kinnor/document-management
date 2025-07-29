@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import axios from 'axios'
 import { extractText } from '../services'
 
 const MAX_SIZE = 5 * 1024 * 1024 // 5MB
@@ -41,7 +42,11 @@ function FileUpload() {
       const text = await extractText(file)
       setResult(text)
     } catch (err: any) {
-      setError(err.message)
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.detail || err.message)
+      } else {
+        setError(err.message)
+      }
     } finally {
       setLoading(false)
     }
@@ -65,3 +70,4 @@ function FileUpload() {
 }
 
 export default FileUpload
+
