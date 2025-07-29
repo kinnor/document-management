@@ -1,0 +1,67 @@
+import React, { useState } from 'react'
+import { extractText } from '../services'
+
+const MAX_SIZE = 5 * 1024 * 1024 // 5MB
+
+function FileUpload() {
+  const [file, setFile] = useState<File | null>(null)
+  const [error, setError] = useState('')
+  const [result, setResult] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
+
+  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setResult(null)
+    const selected = e.target.files?.[0] || null
+    if (!selected) {
+      setFile(null)
+      return
+    }
+    if (selected.type !== 'application/pdf') {
+      setError('Please select a PDF file.')
+      setFile(null)
+      return
+    }
+    if (selected.size > MAX_SIZE) {
+      setError('File size must be less than 5MB.')
+      setFile(null)
+      return
+    }
+    setError('')
+    setFile(selected)
+  }
+
+  const onUpload = async () => {
+    if (!file) {
+      setError('No file selected.')
+      return
+    }
+    setError('')
+    setLoading(true)
+    try {
+      const text = await extractText(file)
+      setResult(text)
+    } catch (err: any) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div className="upload-container">
+      <input type="file" accept="application/pdf" onChange={onFileChange} />
+      <button onClick={onUpload} disabled={loading}>
+        {loading ? 'Uploading...' : 'Upload'}
+      </button>
+      {error && <p className="error">{error}</p>}
+      {result && (
+        <div className="result">
+          <h3>Extracted Text</h3>
+          <pre>{result}</pre>
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default FileUpload
