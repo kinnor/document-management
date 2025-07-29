@@ -5,6 +5,7 @@ app = FastAPI(title="Document Management API")
 
 app.include_router(document_routes.router, prefix="/documents", tags=["documents"])
 app.include_router(ocr_routes.router, prefix="/ocr", tags=["ocr"])
+app.include_router(ocr_routes.router, tags=["ocr"])
 
 @app.get("/")
 def read_root():
