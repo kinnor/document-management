@@ -28,3 +28,7 @@ npm run dev
 
 The source code is organized into `components`, `pages`, `services` and `utils`
 for a clean separation from the backend.
+
+All API requests use **Axios**. Configure the backend URL by setting the
+`VITE_API_URL` environment variable before running `npm run dev`.
+
