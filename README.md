@@ -41,6 +41,9 @@ The application reads two environment variables when calling the AI service:
 - `AI_API_KEY` &ndash; API key for the external provider
 - `AI_API_URL` &ndash; optional override for the API endpoint
 
+All available environment variables are described in the accompanying
+`.env.example` file.
+
 ## Running the Backend
 
 Start the API locally with Uvicorn:
